@@ -1,8 +1,9 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-Route::set('kogit', 'kogit/(<controller>(/<action>(/<id>)))', array('id' => '.+'))
+
+Route::set('project', 'kogit/(<project>/(<controller>(/<action>(/<id>))))', array('id' => '.+'))
 	->defaults(array(
 		'directory'  => 'kogit',
-		'controller' => 'login',
+		'controller' => 'tree',
 		'action'     => 'index',
 	));

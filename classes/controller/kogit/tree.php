@@ -13,7 +13,18 @@ class Controller_Kogit_Tree extends Controller_Kogit {
 
 	public function action_index()
 	{
-		$this->request = Request::factory('kogit/project_alias/tree/tag')->execute();
+		$this->view = new View('smarty:kogit/tree/default');
+		$this->view->project = $this->project;
+		$this->view->commit = $this->models->git->commit('HEAD');
+		$this->view->tree = $this->models->git->tree();
+	}
+	
+	public function action_head($project=NULL, $path='/')
+	{
+		$this->view = new View('smarty:kogit/tree/default');
+		$this->view->project = $this->project;
+		$this->view->commit = $this->models->git->commit('HEAD');
+		$this->view->tree = $this->models->git->tree($path);
 	}
 
 	public function action_tag($tag=NULL)

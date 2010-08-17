@@ -2,7 +2,11 @@
 
 class Model_Kogit_Git extends Model {
 	
-	public $config, $git, $repository;
+	public $config,
+	       $git,
+			 $repository,
+	       $commits = array(),
+			 $files = array();
 	
 	public function __construct($id=0)
 	{
@@ -27,46 +31,55 @@ class Model_Kogit_Git extends Model {
 	/**
 	 * Find commit
 	 */
-	public function commit($sha1=NULL)
+	public function commit($sha1='HEAD')
 	{
-		$output = $this->run('rev-list --header --max-count=1 '.$sha1);
-		
-		$info = array('message_full' => '');
-		
-		$pattern = '/^(author|committer) ([^<]+) <([^>]*)> ([0-9]+) (.*)$/';
-		
-		foreach ($output as $line)
+		if ( ! isset($this->commits[$sha1]))
 		{
-			if (substr($line, 0, 4) === 'tree')
+			$output = $this->run('rev-list --header --max-count=1 '.$sha1);
+			
+			$info = array('message_full' => '');
+			
+			$pattern = '/^(author|committer) ([^<]+) <([^>]*)> ([0-9]+) (.*)$/';
+			
+			foreach ($output as $line)
 			{
-				$info['tree'] = substr($line, 5);
-			}
-			else if (substr($line, 0, 6) === 'parent')
-			{
-				$info['parents'][] = substr($line, 7);
-			}
-			else if (preg_match($pattern, $line, $matches) > 0)
-			{
-				$info[$matches[1] .'_name'] = $matches[2];
-				$info[$matches[1] .'_mail'] = $matches[3];
-				$info[$matches[1] .'_stamp'] = $matches[4] + ((intval($matches[5]) / 100.0) * 3600);
-				$info[$matches[1] .'_timezone'] = $matches[5];
-				$info[$matches[1] .'_utcstamp'] = $matches[4];
-			}
-			else if (substr($line, 0, 4) === '    ' OR (strlen($line) == 0 AND isset($info['message'])))
-			{
-				$info['message_full'] .= substr($line, 4) ."\n";
-				
-				if ( ! isset($info['message']))
+				if (substr($line, 0, 4) === 'tree')
 				{
-					$info['message'] = substr($line, 4, $this->config->commit['message']['maxlength']);
-					$info['message_firstline'] = substr($line, 4);
+					$info['tree'] = substr($line, 5);
+				}
+				else if (substr($line, 0, 6) === 'parent')
+				{
+					$info['parents'][] = substr($line, 7);
+				}
+				else if (preg_match($pattern, $line, $matches) > 0)
+				{
+					$info[$matches[1] .'_name'] = $matches[2];
+					$info[$matches[1] .'_mail'] = $matches[3];
+					$info[$matches[1] .'_stamp'] = $matches[4] + ((intval($matches[5]) / 100.0) * 3600);
+					$info[$matches[1] .'_timezone'] = $matches[5];
+					$info[$matches[1] .'_utcstamp'] = $matches[4];
+				}
+				else if (substr($line, 0, 4) === '    ' OR (strlen($line) == 0 AND isset($info['message'])))
+				{
+					$info['message_full'] .= substr($line, 4) ."\n";
+					
+					if ( ! isset($info['message']))
+					{
+						$info['message'] = substr($line, 4, $this->config->commit['message']['maxlength']);
+						$info['message_firstline'] = substr($line, 4);
+					}
+				}
+				else if (preg_match('/^[0-9a-f]{40}$/', $line) > 0)
+				{
+					$info['h'] = $line;
 				}
 			}
-			else if (preg_match('/^[0-9a-f]{40}$/', $line) > 0)
-			{
-				$info['h'] = $line;
-			}
+			
+			$this->commits[$sha1] = $info;
+		}
+		else
+		{
+			$info = $this->commits[$sha1];
 		}
 		
 		return $info;
@@ -98,7 +111,7 @@ class Model_Kogit_Git extends Model {
 	/**
 	 * Get tree
 	 */
-	public function tree($dir='/', $ref='HEAD')
+	public function tree($dir='/', $ref='HEAD', $fullpath=FALSE)
 	{
 		$tree = array();
 		
@@ -107,15 +120,46 @@ class Model_Kogit_Git extends Model {
 		foreach ($output as $line)
 		{
 			$parts = preg_split('/\s+/', $line, 4);
+			
+			$file = explode('/', $parts[3]);
+			
 			$tree[] = array(
+				'file' => $file[count($file)-1],
 				'name' => $parts[3],
 				'mode' => $parts[0],
 				'type' => $parts[1],
-				'hash' => $parts[2]
+				'hash' => $parts[2],
+				'info' => $this->commit($this->file_commit($parts[3]))
 			);
 		}
-	
+		
 		return $tree;
+	}
+	
+	/**
+	 * Check latest commit of file
+	 */
+	public function file_commit($file=NULL)
+	{
+		if ( ! isset($this->files[$file]))
+		{
+			$output = $this->run('log '.$file.' | cat');
+			$this->files[$file] = substr($output[0], -40);
+		}
+		
+		return $this->files[$file];
+	}
+	
+	public function blob($file=NULL)
+	{
+		$file = $this->repository->path.'/'.$file;
+		$fh = fopen($file, 'r');
+		$data = fread($fh, filesize($file));
+		fclose($fh);
+		
+		$data = htmlentities($data);
+		
+		return $data;
 	}
 	
 	/**
@@ -188,9 +232,10 @@ class Model_Kogit_Git extends Model {
 	 */
 	private function run($command=NULL)
 	{
-		$cmd = $this->git.' --git-dir='.escapeshellarg($this->repository->path).' '.$command;
+		$cmd = 'cd '.escapeshellarg($this->repository->path).' && '.$this->git.' --git-dir='.escapeshellarg($this->repository->path).'/.git '.$command;
 		$ret = 0;
-		exec($cmd, $output, $ret);
+		$output = '';
+		@exec($cmd, $output, $ret);
 		return $output;
 	}
 	
