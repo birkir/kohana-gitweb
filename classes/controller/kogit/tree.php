@@ -11,12 +11,9 @@
  */
 class Controller_Kogit_Tree extends Controller_Kogit {
 
-	public function action_index()
+	public function action_index($project=NULL)
 	{
-		$this->view = new View('smarty:kogit/tree/default');
-		$this->view->project = $this->project;
-		$this->view->commit = $this->models->git->commit('HEAD');
-		$this->view->tree = $this->models->git->tree();
+		$this->request->redirect(Kohana::$base_url.'kogit/'.$project.'/tree/head');
 	}
 	
 	public function action_head($project=NULL, $path='/')
@@ -25,6 +22,14 @@ class Controller_Kogit_Tree extends Controller_Kogit {
 		$this->view->project = $this->project;
 		$this->view->commit = $this->models->git->commit('HEAD');
 		$this->view->tree = $this->models->git->tree($path);
+	}
+	
+	public function action_sum($project=NULL, $sum=NULL)
+	{
+		$this->view = new View('smarty:kogit/tree/default');
+		$this->view->project = $this->project;
+		$this->view->commit = $this->models->git->commit('HEAD');
+		$this->view->tree = $this->models->git->tree($sum);
 	}
 
 	public function action_tag($tag=NULL)

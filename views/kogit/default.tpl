@@ -1,1 +1,1 @@
-{$view}
+{if isset($view)}{$view}{/if}
