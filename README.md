@@ -28,9 +28,9 @@ More documentation is on the way, how to install, upgrade and use.
 
 ### Copyright
 
-The Kogit module is copyright 2010 Birkir R Gudjonsson http://birkir.forritun.org email 
-birkir.gudjonsson@gmail.com
-Kohana is copyright 2008-2009 Kohana Team http://kohanaframework.com/license.html
+The Kogit module is copyright 2010 Birkir R Gudjonsson <http://birkir.forritun.org> email 
+<birkir.gudjonsson@gmail.com>
+Kohana is copyright 2008-2009 Kohana Team <http://kohanaframework.com/license.html>
 
 The Kogit module for Kohana is free software: you can redistribute it and/or modify it under the terms of the 
 GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or 
