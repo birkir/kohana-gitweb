@@ -6,9 +6,18 @@ class Controller_Kogit extends Controller {
 	{
 		parent::before();
 	}
+	
+	public function action_index()
+	{
+		$this->request->redirect('kogit/login');
+	}
 
 	public function after()
 	{
 		parent::after();
+		
+		View::set_global('path', '/kogit/');
+		
+		$this->request->response = $this->template;
 	}
 }
