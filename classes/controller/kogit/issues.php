@@ -17,8 +17,8 @@ class Controller_Kogit_Issues extends Controller_Kogit {
 	// View issue and its comments
 	public function action_view($id=0){}
 
-        // View issues by tag name (open/unread/closed)
-        public function action_tag($tag=NULL){}
+	// View issues by tag name (open/unread/closed)
+	public function action_tag($tag=NULL){}
 
 	// Search issues
 	public function action_search($keyword=NULL){}
