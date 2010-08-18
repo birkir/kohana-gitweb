@@ -24,7 +24,8 @@ class Controller_Kogit_Commit extends Controller_Kogit {
 		$commit_from = isset($this->view->commit['parents'][0]) ? $this->view->commit['parents'][0] : str_repeat('0', 40);
 		$commit_to = $this->view->commit['h'];
 		
-		$this->view->diff = $this->models->git->diff($commit_from, $commit_to);
+		$this->view->diff = $this->models->git->diff($commit_from, $commit_to, TRUE);
+		
 	}
 
 }

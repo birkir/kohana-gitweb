@@ -163,7 +163,7 @@ class Model_Kogit_Git extends Model {
 		return $tree;
 	}
 	
-	public function diff($from, $to)
+	public function diff($from, $to, $highlight=FALSE)
 	{
 		$output = $this->run('diff '.$from.'..'.$to);
 		
@@ -184,12 +184,8 @@ class Model_Kogit_Git extends Model {
 					'deleted' => 0,
 					'created' => 0
 				);
-				$mime = substr($file['name'],strrpos($file['name'],'.')+1);
-				if($mime=='tpl')
-				{
-					$mime = 'html';
-				}
-				$file['mime'] = $mime;
+				$lnr = 0;
+				$rnr = 0;
 			}
 			
 			if ($i == 1)
@@ -213,18 +209,37 @@ class Model_Kogit_Git extends Model {
 				$count = $i + 2;
 			}
 			
-			if ($i >= $count AND $count != -1)
+			if(preg_match("#\@\@ \-([0-9]{1,9}).*?\+([0-9]{1,9}).*?\@\@#s", $line, $_count))
 			{
+				$lnr = $_count[1]-1;
+				$rnr = $_count[2]-1;
+				$file['diff'][] = array('lnr' => '...', 'rnr' => '...', 'type' => '@', 'line' => $line);
+			}
+			
+			else if ($i > $count AND $count != -1)
+			{
+				$type = '';
 				if (substr($line,0,1) == '+')
 				{
 					$file['created']++;
+					$type = '+';
+					$rnr++;
 				}
-				if (substr($line,0,1) == '-')
+				else if (substr($line,0,1) == '-')
 				{
 					$file['deleted']++;
+					$type = '-';
+					$lnr++;
+				}
+				else
+				{
+					$lnr++;
+					$rnr++;
 				}
 				
-				$file['diff'][] = $line;
+				$line = str_replace(array('<', '>', "\t"), array('&lt;', '&gt;', '  '), $line);
+				
+				$file['diff'][] = array('lnr' => $lnr, 'rnr' => $rnr, 'type' => $type, 'line' => $line);
 			}
 			
 			$i++;

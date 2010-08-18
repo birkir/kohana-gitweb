@@ -1,2 +1,10 @@
-SyntaxHighlighter.defaults['tab-size'] = 8;
-SyntaxHighlighter.all();
+$(document).ready(function(){
+	
+	// syntax highlight
+	$("pre ol li").hover(function(){
+		$(this).css({ background: '#ffffcc' });
+	}, function(){
+		$(this).css({ background: '' });
+	});
+	
+});
