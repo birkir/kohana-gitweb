@@ -6,7 +6,8 @@ class Controller_Kogit extends Controller {
 	       $project,
 			 $actions = array(
 				'index',
-				'login'
+				'login',
+				'media'
 			 );
 	
 	public function before()
@@ -37,6 +38,8 @@ class Controller_Kogit extends Controller {
 					
 					$this->request->redirect(Kohana::$base_url.'kogit/'.$this->project->alias.'/tree/head');
 				}
+				
+				$this->template->project = $this->project;
 			}
 			else
 			{
@@ -60,6 +63,9 @@ class Controller_Kogit extends Controller {
 		parent::after();
 		
 		View::set_global('path', Kohana::$base_url.'kogit/');
+		View::set_global('controller', $this->request->controller);
+		View::set_global('action', $this->request->action);
+		
 		
 		if (isset($this->view))
 		{
