@@ -27,5 +27,14 @@ class Controller_Kogit_Blob extends Controller_Kogit {
 		$this->view->commit = $this->models->git->commit('HEAD');
 		$this->view->blob = $this->models->git->blob($file);
 	}
+	
+	public function action_view($project=NULL, $uri=NULL)
+	{
+		list($sha1, $path) = $this->uri($uri);
+		$this->view = new View('smarty:kogit/blob/default');
+		$this->view->project = $this->project;
+		$this->view->commit = $this->models->git->commit($sha1);
+		$this->view->blob = $this->models->git->blob($path);
+	}
 
 }

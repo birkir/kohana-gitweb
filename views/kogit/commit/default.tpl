@@ -3,7 +3,6 @@
 				<p>{$project->description}</p>
 				<p><a href="{$project->website}">{$project->website}</a></p>
 			</div>
-{if isset($commit.committer_name)}
 			<div id="commit">
 				<div class="details">
 					<p>{$commit.message_full}</p>
@@ -15,20 +14,37 @@
 				<ul>
 					<li><strong>commit</strong> <a href="{$path}{$project->alias}/commit/view/{$commit.h}">{$commit.h|substr:0:20}</a></li>
 					<li><strong>tree</strong> <a href="{$path}{$project->alias}/tree/view/{$commit.tree}">{$commit.tree|substr:0:20}</a></li>
+{if isset($commit.parents)}
 					<li>
 						<strong>parents</strong>
 {foreach from=$commit.parents item=item}
-						<a href="{$path}{$project->alias}/commit/{$item}">{$item|substr:0:20}</a><br />
+						<a href="{$path}{$project->alias}/commit/view/{$item}">{$item|substr:0:20}</a><br />
 {/foreach}
 					</li>
+{/if}
 				</ul>
 				<div class="clearfix"></div>
 			</div>
-{/if}
-{if isset($blob)}
-			<div id="blob">
-				<pre class="brush: css">
-{$blob}
-				</pre>
+			<div id="files">
+				<table>
+					<tbody>
+{foreach from=$diff item=item}
+						<tr>
+							<td>icon.{$item.type}.png</td>
+							<td>{$item.name}</td>
+							<td>{$item.created+$item.deleted}</td>
+						</tr>
+{/foreach}
+					</tbody>
+				</table>
 			</div>
-{/if}
+			<div id="diff">
+{foreach from=$diff item=item}
+				<h2>{$item.name}</h2>
+				<pre class="brush: {$item.mime}">
+{foreach from=$item.diff item=line}
+{$line}
+{/foreach}
+				</pre>
+{/foreach}
+			</div>

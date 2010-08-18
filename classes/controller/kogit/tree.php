@@ -23,21 +23,28 @@ class Controller_Kogit_Tree extends Controller_Kogit {
 		$this->view->commit = $this->models->git->commit('HEAD');
 		$this->view->tree = $this->models->git->tree($path);
 		$this->view->readme = $this->models->git->blob('README.md');
+		$this->view->key = 'head';
+		$this->view->val = NULL;
+		
 		if ( ! $this->view->readme)
 		{
 			$this->view->readme = $this->models->git->blob($path.'README');
 		}
 	}
 	
-	public function action_sum($project=NULL, $sum=NULL)
+	public function action_view($project=NULL, $uri=NULL)
 	{
+		list($sum, $path) = $this->uri($uri);
+		
 		$this->view = new View('smarty:kogit/tree/default');
 		$this->view->project = $this->project;
 		$this->view->commit = $this->models->git->commit('HEAD');
-		$this->view->tree = $this->models->git->tree($sum);
+		$this->view->tree = $this->models->git->tree((empty($path) ? '/' : '').$path, $sum);
+		$this->view->key = 'view/';
+		$this->view->val = $sum;
 	}
 
-	public function action_tag($tag=NULL)
+	public function action_tag($project=NULL, $tag=NULL)
 	{
 	}
 

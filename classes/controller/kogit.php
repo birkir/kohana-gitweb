@@ -57,6 +57,14 @@ class Controller_Kogit extends Controller {
 	{
 		echo "foo";
 	}
+	
+	public function uri($uri=NULL)
+	{
+		$uri = explode('/', $uri);
+		$sum = $uri[0];
+		unset($uri[0]);
+		return array($sum, implode('/', $uri));
+	}
 
 	public function after()
 	{

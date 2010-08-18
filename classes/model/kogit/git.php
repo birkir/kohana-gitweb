@@ -86,6 +86,26 @@ class Model_Kogit_Git extends Model {
 	}
 	
 	/**
+	 * Find all commits
+	 */
+	function commits()
+	{
+		$output = $this->run('log | cat');
+		
+		$commits = array();
+		
+		foreach($output as $line)
+		{
+			if (substr(trim($line), 0, 6) == 'commit')
+			{
+				$commits[] = substr(trim($line), -40);
+			}
+		}
+		
+		return $commits;
+	}
+	
+	/**
 	 * Find tags
 	 */
 	public function tags()
@@ -111,7 +131,7 @@ class Model_Kogit_Git extends Model {
 	/**
 	 * Get tree
 	 */
-	public function tree($dir='/', $ref='HEAD', $fullpath=FALSE)
+	public function tree($dir='/', $ref='HEAD', $info=TRUE)
 	{
 		$tree = array();
 		
@@ -123,17 +143,96 @@ class Model_Kogit_Git extends Model {
 			
 			$file = explode('/', $parts[3]);
 			
-			$tree[] = array(
+			$_tree = array(
 				'file' => $file[count($file)-1],
 				'name' => $parts[3],
 				'mode' => $parts[0],
 				'type' => $parts[1],
-				'hash' => $parts[2],
-				'info' => $this->commit($this->file_commit($parts[3]))
+				'hash' => $parts[2]
 			);
+			
+			if ($info==TRUE)
+			{
+				$_tree['info'] = $this->commit($this->file_commit($parts[3]));
+			}
+			
+			$tree[] = $_tree;
+			
 		}
 		
 		return $tree;
+	}
+	
+	public function diff($from, $to)
+	{
+		$output = $this->run('diff '.$from.'..'.$to);
+		
+		$files = array();
+		foreach ($output as $line)
+		{
+			if (preg_match('#diff \-\-git a\/(.*?) b\/(.*?)!exit#s', $line.'!exit', $f))
+			{
+				if (isset($file))
+				{
+					$files[] = $file;
+				}
+				$i = 0;
+				$count = -1;
+				$file = array(
+					'name' => $f[2],
+					'diff' => array(),
+					'deleted' => 0,
+					'created' => 0
+				);
+				$mime = substr($file['name'],strrpos($file['name'],'.')+1);
+				if($mime=='tpl')
+				{
+					$mime = 'html';
+				}
+				$file['mime'] = $mime;
+			}
+			
+			if ($i == 1)
+			{
+				if (substr($line,0,8) == 'new file')
+				{
+					$file['type'] = 'created';
+				}
+				elseif (substr($line,0,12) == 'deleted file')
+				{
+					$file['type'] = 'deleted';
+				}
+				else
+				{
+					$file['type'] = 'edited';
+				}
+			}
+			
+			if (($i == 1 OR $i == 2) AND substr($line,0,6) == 'index ')
+			{
+				$count = $i + 2;
+			}
+			
+			if ($i >= $count AND $count != -1)
+			{
+				if (substr($line,0,1) == '+')
+				{
+					$file['created']++;
+				}
+				if (substr($line,0,1) == '-')
+				{
+					$file['deleted']++;
+				}
+				
+				$file['diff'][] = $line;
+			}
+			
+			$i++;
+		}
+		
+		$files[] = $file;
+		
+		return $files;
 	}
 	
 	/**
