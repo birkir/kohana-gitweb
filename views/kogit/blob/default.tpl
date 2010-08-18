@@ -23,5 +23,7 @@
 				<div class="clearfix"></div>
 			</div>
 <div id="blob">
-<pre>{$blob}</pre>
+<pre class="brush: css">
+{$blob}
+</pre>
 </div>

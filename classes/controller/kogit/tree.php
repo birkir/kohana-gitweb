@@ -22,6 +22,11 @@ class Controller_Kogit_Tree extends Controller_Kogit {
 		$this->view->project = $this->project;
 		$this->view->commit = $this->models->git->commit('HEAD');
 		$this->view->tree = $this->models->git->tree($path);
+		$this->view->readme = $this->models->git->blob('README.md');
+		if ( ! $this->view->readme)
+		{
+			$this->view->readme = $this->models->git->blob($path.'README');
+		}
 	}
 	
 	public function action_sum($project=NULL, $sum=NULL)

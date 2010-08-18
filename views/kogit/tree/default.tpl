@@ -22,25 +22,35 @@
 				</ul>
 				<div class="clearfix"></div>
 			</div>
-<div id="tree">
-	<table cellspacing="0">
-		<thead>
-			<tr>
-				<th>icon</th>
-				<th>name</th>
-				<th>age</th>
-				<th>message</th>
-			</tr>
-		</thead>
-		<tbody>
+			<div id="tree">
+				<table cellspacing="0">
+					<thead>
+						<tr>
+							<th style="padding:0;"></th>
+							<th style="padding-left:0;">name</th>
+							<th>age</th>
+							<th>message</th>
+							<th style="text-align:right;"><a href="{$path}{$project->alias}/commits/head" style="color:#fff;">history</a></th>
+						</tr>
+					</thead>
+					<tbody>
 {foreach from=$tree item=item}
-			<tr>
-				<td>{$item.type}</td>
-				<td><a href="{$path}{$project->alias}/{$item.type}/head/{$item.name}">{$item.file}</a></td>
-				<td>{'Y-m-d H:i:s'|date:$item.info.committer_utcstamp}</td>
-				<td>{$item.info.message} [{$item.info.committer_name}]</td>
-			</tr>
+						<tr>
+							<td style="padding:7px;"><img src="{$path}kogit/media/img/icon.{$item.type}.png" alt="" /></td>
+							<td style="padding-left:0;"><a href="{$path}{$project->alias}/{$item.type}/head/{$item.name}">{$item.file}</a></td>
+							<td>{if isset($item.info.committer_utcstamp)}{'Y-m-d H:i:s'|date:$item.info.committer_utcstamp}{else}0000-00-00 00:00:00{/if}</td>
+							<td colspan="2">{if isset($item.info.message)}{$item.info.message|truncate:50} [{$item.info.committer_name}]{else}Unknown{/if}</td>
+						</tr>
 {/foreach}
-		</tbody>
-	</table>
-</div>
+					</tbody>
+				</table>
+			</div>
+{if $readme}
+			<br />
+			<div id="readme">
+			<h2>Readme</h2>
+			<pre>
+{$readme}
+			</pre>
+			</div>
+{/if}

@@ -144,7 +144,14 @@ class Model_Kogit_Git extends Model {
 		if ( ! isset($this->files[$file]))
 		{
 			$output = $this->run('log '.$file.' | cat');
-			$this->files[$file] = substr($output[0], -40);
+			if (isset($output[0]))
+			{
+				$this->files[$file] = substr($output[0], -40);
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 		
 		return $this->files[$file];
@@ -153,11 +160,17 @@ class Model_Kogit_Git extends Model {
 	public function blob($file=NULL)
 	{
 		$file = $this->repository->path.'/'.$file;
+		
+		if ( ! file_exists($file))
+		{
+			return FALSE;
+		}
+		
 		$fh = fopen($file, 'r');
 		$data = fread($fh, filesize($file));
 		fclose($fh);
 		
-		$data = htmlentities($data);
+		$data = str_replace(array('<', '>'), array('&lt;', '&gt;'), $data);
 		
 		return $data;
 	}
