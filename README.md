@@ -1,7 +1,7 @@
 ## Kogit Module for Kohana
 
 This is a module for the [Kohana PHP framework](http://kohanaframework.org/) that
-is kind of a Github(http://github.com) repository browser clone for your projects.
+is kind of a [Github](http://github.com) repository browser clone for your projects.
 
 ### Requirements
 
