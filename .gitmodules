@@ -1,0 +1,3 @@
+[submodule "vendor/glip"]
+	path = vendor/glip
+	url = git://github.com/patrikf/glip.git

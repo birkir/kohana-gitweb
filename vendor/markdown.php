@@ -38,7 +38,7 @@ define( 'MARKDOWN_VERSION',  "1.0.1n" ); # Sat 10 Oct 2009
 
 ### Standard Function Interface ###
 
-@define( 'MARKDOWN_PARSER_CLASS',  'Markdown_Parser' );
+@define( '_MARKDOWN_PARSER_CLASS',  'Markdown_Parser' );
 
 function Markdown($text) {
 #
@@ -47,7 +47,7 @@ function Markdown($text) {
 	# Setup static parser variable.
 	static $parser;
 	if (!isset($parser)) {
-		$parser_class = MARKDOWN_PARSER_CLASS;
+		$parser_class = _MARKDOWN_PARSER_CLASS;
 		$parser = new $parser_class;
 	}
 
