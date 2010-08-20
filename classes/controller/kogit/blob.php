@@ -11,30 +11,18 @@
  */
 class Controller_Kogit_Blob extends Controller_Kogit {
 	
-	public function action_index(){}
-	
-	// get file in tag
-	public function action_tag(){}
-	
-	// get file in branch
-	public function action_branch(){}
-	
-	// get file in head
-	public function action_head($project=NULL, $file=NULL)
+	public function action_index($hash=NULL, $file=NULL)
 	{
+		$hash = (empty($hash) OR $hash == 'head') ? 'HEAD' : $hash;
+		
 		$this->view = new View('smarty:kogit/blob/default');
-		$this->view->project = $this->project;
-		$this->view->commit = $this->models->git->commit('HEAD');
-		$this->view->blob = $this->models->git->blob($file);
-	}
-	
-	public function action_view($project=NULL, $uri=NULL)
-	{
-		list($sha1, $path) = $this->uri($uri);
-		$this->view = new View('smarty:kogit/blob/default');
-		$this->view->project = $this->project;
-		$this->view->commit = $this->models->git->commit($sha1);
-		$this->view->blob = $this->models->git->blob($path);
+		
+		$this->view->project = new View('smarty:kogit/misc/project');
+		
+		$this->view->commit = new View('smarty:kogit/misc/commit');
+		$this->view->commit->commit = $this->git->commit($hash);
+		
+		$this->view->blob = $this->git->blob($file, TRUE);
 	}
 
 }

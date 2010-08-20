@@ -17,35 +17,15 @@ class Controller_Kogit_Media extends Controller {
 	protected $_minify = 'css,js';
 	protected $_gzip = TRUE;
 	
-	public function action_index()
-	{
-		$this->request->response = '404 File not found';
-	}
-	
-	public function action_img($project=NULL, $file='')
-	{
-		$this->passthru($this->process($file));
-	}
-	
-	public function action_css($project=NULL, $file='')
-	{
-		$this->passthru($this->process($file));
-	}
-	
-	public function action_js($project=NULL, $file='')
-	{
-		$this->passthru($this->process($file));
-	}
-	
 	/**
 	 * Process certein file through minify, gzip, cache, etc.
 	 *
 	 * @param	string	Path to file
 	 * @return	string	Path to file
 	 */
-	public function process($file=NULL)
+	public function action_process($mime=NULL, $file=NULL)
 	{
-		$file = MODPATH.$this->_module.$this->_directory.$this->request->action.'/'.$file;
+		$file = MODPATH.$this->_module.$this->_directory.$mime.'/'.$file;
 		
 		if ( ! file_exists($file))
 		{
@@ -53,9 +33,9 @@ class Controller_Kogit_Media extends Controller {
 			return false;
 		}
 		
-		if (in_array($this->request->action, explode(',', $this->_minify)))
+		if (in_array($mime, explode(',', $this->_minify)))
 		{
-			$file = $this->minify($file, $this->request->action);
+			$file = $this->minify($file, $mime);
 		}
 		
 		if ($this->_gzip == TRUE)
@@ -63,7 +43,7 @@ class Controller_Kogit_Media extends Controller {
 			$file = $this->gzip($file);
 		}
 		
-		return $file;
+		$this->passthru($file);
 	}
 
 	/**

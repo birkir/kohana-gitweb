@@ -11,45 +11,32 @@
  */
 class Controller_Kogit_Tree extends Controller_Kogit {
 
-	public function action_index($project=NULL)
+	public function action_index($hash=NULL, $path=NULL)
 	{
-		$this->request->redirect(Kohana::$base_url.'kogit/'.$project.'/tree/head');
-	}
-	
-	public function action_head($project=NULL, $path='/')
-	{
-		$this->view = new View('smarty:kogit/tree/default');
-		$this->view->project = $this->project;
-		$this->view->commit = $this->models->git->commit('HEAD');
-		$this->view->tree = $this->models->git->tree($path);
-		$this->view->readme = $this->models->git->blob('README.md');
-		$this->view->key = 'head';
-		$this->view->val = NULL;
+		$path = empty($path) ? '/' : $path;
 		
-		if ( ! $this->view->readme)
+		$hash = (empty($hash) OR $hash == 'head') ? 'HEAD' : $hash;
+		
+		$this->view = new View('smarty:kogit/tree/default');
+		
+		$this->view->project = new View('smarty:kogit/misc/project');
+		
+		$this->view->commit = new View('smarty:kogit/misc/commit');
+		$this->view->commit->commit = $this->git->commit($hash);
+		
+		$this->view->tree = $this->git->tree($path, $hash);
+		
+		$this->view->hash = $hash;
+		
+		if ($readme = $this->git->blob('README.md', FALSE))
 		{
-			$this->view->readme = $this->models->git->blob($path.'README');
+			$this->view->readme_md = Markdown($readme);
 		}
-	}
-	
-	public function action_view($project=NULL, $uri=NULL)
-	{
-		list($sum, $path) = $this->uri($uri);
+		else
+		{
+			$this->view->readme = $this->git->blob($extra.'README', FALSE);
+		}
 		
-		$this->view = new View('smarty:kogit/tree/default');
-		$this->view->project = $this->project;
-		$this->view->commit = $this->models->git->commit('HEAD');
-		$this->view->tree = $this->models->git->tree((empty($path) ? '/' : '').$path, $sum);
-		$this->view->key = 'view/';
-		$this->view->val = $sum;
-	}
-
-	public function action_tag($project=NULL, $tag=NULL)
-	{
-	}
-
-	public function action_branch($branch=NULL)
-	{
 	}
 
 }

@@ -2,37 +2,17 @@
 
 class Model_Kogit_Git extends Model {
 	
-	public $config,
-	       $git,
-			 $repository,
+	public $repository,
 	       $commits = array(),
 			 $files = array();
-	
-	public function __construct($id=0)
-	{
-		$this->config = Kohana::config("kogit");
-		
-		$this->git = $this->config->git;
-		
-		if ($id == 0)
-		{
-			throw new Kohana_Exception('No project id defined');
-		}
-		
-		$this->repository = ORM::factory('kogit_project', $id);
-		
-		if ( ! $this->repository->loaded() )
-		{
-			throw new Kohana_Exception('Project was not found!');
-		}
-		
-	}
 	
 	/**
 	 * Find commit
 	 */
 	public function commit($sha1='HEAD')
 	{
+		$config = Kohana::config("kogit");
+		
 		if ( ! isset($this->commits[$sha1]))
 		{
 			$output = $this->run('rev-list --header --max-count=1 '.$sha1);
@@ -65,7 +45,7 @@ class Model_Kogit_Git extends Model {
 					
 					if ( ! isset($info['message']))
 					{
-						$info['message'] = substr($line, 4, $this->config->commit['message']['maxlength']);
+						$info['message'] = substr($line, 4, $config->commit['message']['maxlength']);
 						$info['message_firstline'] = substr($line, 4);
 					}
 				}
@@ -271,20 +251,38 @@ class Model_Kogit_Git extends Model {
 		return $this->files[$file];
 	}
 	
-	public function blob($file=NULL)
+	public function blob($file=NULL, $highlight=TRUE, $hash='HEAD')
 	{
-		$file = $this->repository->path.'/'.$file;
+		$config = Kohana::config("kogit");
 		
-		if ( ! file_exists($file))
+		$language = substr($file, strrpos($file, '.')+1);
+		
+		switch($language)
+		{
+			case 'tpl':
+				$language = 'smarty'; break;
+			case 'js':
+				$language = 'javascript'; break;
+			default:
+				$language = $language;
+		}
+		
+		$output = $this->run('show '.$hash.':'.$file.' | cat');
+		
+		$data = implode("\n", $output);
+		
+		if (empty($data))
 		{
 			return FALSE;
 		}
 		
-		$fh = fopen($file, 'r');
-		$data = fread($fh, filesize($file));
-		fclose($fh);
-		
-		$data = str_replace(array('<', '>'), array('&lt;', '&gt;'), $data);
+		if ($highlight == TRUE)
+		{
+			$data = new GeSHi($data, $language);
+			$data->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS);
+			$data->set_line_style('background:#ffffff; color:#aaaaaa;');
+			$data = $data->parse_code();
+		}
 		
 		return $data;
 	}
@@ -359,7 +357,10 @@ class Model_Kogit_Git extends Model {
 	 */
 	private function run($command=NULL)
 	{
-		$cmd = 'cd '.escapeshellarg($this->repository->path).' && '.$this->git.' --git-dir='.escapeshellarg($this->repository->path).'/.git '.$command;
+		$config = Kohana::config("kogit");
+		
+		$cmd = 'cd '.escapeshellarg($config->repository).' && '.$config->git.' --git-dir='.escapeshellarg($config->repository.'/.git').' '.$command;
+		
 		$ret = 0;
 		$output = '';
 		@exec($cmd, $output, $ret);

@@ -16,8 +16,8 @@ class Controller_Kogit_Commits extends Controller_Kogit {
 	public function action_index()
 	{
 		$this->view = new View('smarty:kogit/commits/default');
-		$this->view->project = $this->project;
-		$commits = $this->models->git->commits();
+		
+		$commits = $this->git->commits();
 		
 		$this->view->pagination = Pagination::factory(array(
 			'total_items'    => count($commits),
@@ -28,19 +28,10 @@ class Controller_Kogit_Commits extends Controller_Kogit {
 		
 		foreach ($commits as $k => $commit)
 		{
-			$commits[$k] = $this->models->git->commit($commit);
+			$commits[$k] = $this->git->commit($commit);
 		}
 		
 		$this->view->commits = $commits;
 		
 	}
-
-	public function action_tag($tag=NULL)
-	{
-	}
-
-	public function action_branch($branch=NULL)
-	{
-	}
-
 }

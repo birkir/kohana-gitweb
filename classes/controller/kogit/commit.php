@@ -11,20 +11,20 @@
  */
 class Controller_Kogit_Commit extends Controller_Kogit {
 
-	public function action_index()
+	public function action_index($hash=NULL)
 	{
-	}
-
-	public function action_view($project=NULL, $sha1=NULL)
-	{
+		$hash = (empty($hash) OR $hash == 'head') ? 'HEAD' : $hash;
+		
 		$this->view = new View('smarty:kogit/commit/default');
-		$this->view->project = $this->project;
-		$this->view->commit = $this->models->git->commit($sha1);
+		$this->view->project = new View('smarty:kogit/misc/project');
 		
-		$commit_from = isset($this->view->commit['parents'][0]) ? $this->view->commit['parents'][0] : str_repeat('0', 40);
-		$commit_to = $this->view->commit['h'];
+		$this->view->commit = new View('smarty:kogit/misc/commit');
+		$this->view->commit->commit = $this->git->commit($hash);
 		
-		$this->view->diff = $this->models->git->diff($commit_from, $commit_to, TRUE);
+		$commit_from = isset($this->view->commit->commit['parents'][0]) ? $this->view->commit->commit['parents'][0] : str_repeat('0', 40);
+		$commit_to = $this->view->commit->commit['h'];
+		
+		$this->view->diff = $this->git->diff($commit_from, $commit_to, TRUE);
 		
 	}
 
