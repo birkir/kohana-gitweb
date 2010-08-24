@@ -15,10 +15,10 @@ class Controller_Kogit_Commit extends Controller_Kogit {
 	{
 		$hash = (empty($hash) OR $hash == 'head') ? 'HEAD' : $hash;
 		
-		$this->view = new View('smarty:kogit/commit/default');
-		$this->view->project = new View('smarty:kogit/misc/project');
+		$this->view = new View('kogit/commit');
+		$this->view->project_info = new View('kogit/block.project');
 		
-		$this->view->commit = new View('smarty:kogit/misc/commit');
+		$this->view->commit = new View('kogit/block.commit');
 		$this->view->commit->commit = $this->git->commit($hash);
 		
 		$commit_from = isset($this->view->commit->commit['parents'][0]) ? $this->view->commit->commit['parents'][0] : str_repeat('0', 40);

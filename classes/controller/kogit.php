@@ -10,7 +10,7 @@ class Controller_Kogit extends Controller {
 		parent::before();
 		
 		$this->template = new View('kogit/default');
-		$this->view = new View('smarty:kogit/misc/empty');
+		$this->view = new View('kogit/block.empty');
 		$this->config = Kohana::config("kogit");
 		
 		$this->git = new Model_Kogit_Git;

@@ -15,7 +15,7 @@ class Controller_Kogit_Commits extends Controller_Kogit {
 	
 	public function action_index()
 	{
-		$this->view = new View('smarty:kogit/commits/default');
+		$this->view = new View('kogit/commits');
 		
 		$commits = $this->git->commits();
 		
