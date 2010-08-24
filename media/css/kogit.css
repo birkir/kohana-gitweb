@@ -118,7 +118,7 @@ p.pagination a { display:inline-block; padding:2px 6px; margin:0 2px; color:#888
 #wrap #commits div.commit,
 #wrap #commit { border:1px solid #bedce7; margin:0 0 10px; background:#eaf2f5; }
 #wrap #commits div.commit div.details,
-#wrap #commit div.details { float:left; padding:7px 15px; }
+#wrap #commit div.details { float:left; padding:7px 15px; width:62%; }
 #wrap #commits div.commit div.details p,
 #wrap #commit div.details p { font-family:monospace; font-size:12px; }
 #wrap #commits div.commit ul,
