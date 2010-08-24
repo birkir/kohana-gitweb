@@ -4,9 +4,9 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 		<title>KoGit 1.0</title>
-		<link href="{$path}media/css/kogit.css" type="text/css" rel="stylesheet" media="screen" charset="utf-8" />
+		<link href="<?php echo $path; ?>media/css/kogit.css" type="text/css" rel="stylesheet" media="screen" charset="utf-8" />
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
-		<script src="{$path}media/js/kogit.js" type="text/javascript"></script>
+		<script src="<?php echo $path; ?>media/js/kogit.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div id="wrap">
@@ -16,15 +16,17 @@
 			</div>
 			<div id="controllers">
 				<ul>
-					<li><a href="{$path}tree" {if $controller == "tree" OR $controller == "blob"} class="current"{/if}>Source</a></li>
-					<li><a href="{$path}commits" {if $controller == "commits" OR $controller == "commit"} class="current"{/if}>Commits</a></li>
-					<li><a href="{$path}issues" {if $controller == "issues"} class="current"{/if}>Issues</a></li>
-					<li><a href="{$path}downloads" {if $controller == "downloads"} class="current"{/if}>Downloads</a></li>
-					<li><a href="{$path}wiki" {if $controller == "wiki"} class="current"{/if}>Wiki</a></li>
+					<li><a href="<?php echo $path; ?>tree"<?php if($controller == "tree" OR $controller == "blob"): echo ' class="current"'; endif ?>><?php echo __('Source'); ?></a></li>
+					<li><a href="<?php echo $path; ?>commits"<?php if($controller == "commits" OR $controller == "commit"): echo ' class="current"'; endif ?>><?php echo __('Commits'); ?></a></li>
+					<li><a href="<?php echo $path; ?>issues"<?php if($controller == "issues"): echo ' class="current"'; endif ?>><?php echo __('Issues'); ?></a></li>
+					<li><a href="<?php echo $path; ?>downloads"<?php if($controller == "downloads"): echo ' class="current"'; endif ?>><?php echo __('Downloads'); ?></a></li>
+					<li><a href="<?php echo $path; ?>wiki"<?php if($controller == "wiki"): echo ' class="current"'; endif ?>><?php echo __('Wiki'); ?></a></li>
 				</ul>
 				<div class="clearfix"></div>
 			</div>
-{if isset($view)}{$view}{/if}
+<?php if (isset($view)): ?>
+<?php echo $view; ?>
+<?php endif ?>
 		</div>
 	</body>
 </html>

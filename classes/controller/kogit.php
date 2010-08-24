@@ -9,7 +9,7 @@ class Controller_Kogit extends Controller {
 	{
 		parent::before();
 		
-		$this->template = new View('smarty:kogit/default');
+		$this->template = new View('kogit/default');
 		$this->view = new View('smarty:kogit/misc/empty');
 		$this->config = Kohana::config("kogit");
 		
