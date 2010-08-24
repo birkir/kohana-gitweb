@@ -11,8 +11,22 @@
  */
 class Controller_Kogit_Tree extends Controller_Kogit {
 
+	/**
+	 * Display current repository tree by hash
+	 *
+	 * @param	string	Hash to use
+	 * @param	string	Directory to display
+	 * @return	void
+	 */
 	public function action_index($hash=NULL, $path=NULL)
 	{
+		// Check if Markdown class has been loaded
+		if ( ! class_exists('Markdown', FALSE))
+		{
+		        // Load Markdown support
+		        require_once(Kohana::find_file('vendor', 'markdown/markdown'));
+		}
+
 		$path = empty($path) ? '/' : $path;
 		
 		$hash = (empty($hash) OR $hash == 'head') ? 'HEAD' : $hash;
@@ -28,6 +42,7 @@ class Controller_Kogit_Tree extends Controller_Kogit {
 		
 		$this->view->hash = $hash;
 		
+		// Check if markdown readme file was found
 		if ($readme = $this->git->blob('README.md', FALSE))
 		{
 			$this->view->readme_md = Markdown($readme);
