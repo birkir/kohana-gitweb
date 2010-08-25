@@ -16,8 +16,8 @@
 						<tr>
 							<td style="padding:7px;"><img src="<?php echo $path; ?>media/img/icon.<?php echo $item['type']; ?>.png" alt="" /></td>
 							<td style="padding-left:0;"><a href="<?php echo $path; ?><?php echo $item['type']; ?>/index/<?php echo $hash; ?>/<?php echo $item['name']; ?>"><?php echo $item['file']; ?></a></td>
-							<td><?php if (isset($item['info']['committer_utcstamp'])): ?><?php echo date('Y-m-d H:i:s', $item['info']['committer_utcstamp']); else: echo '0000-00-00 00:00:00'; endif ?></td>
-							<td colspan="2"><?php if (isset($item['info']['message'])): ?><?php echo $item['info']['message'].' ['.$item['info']['committer_name'].']'; else: echo __('Unknown'); endif ?></td>
+							<td><?php if (isset($item['info']['committer_utcstamp'])): ?><?php echo __(Date::fuzzy_span($item['info']['committer_utcstamp'])); else: echo __('Unknown'); endif ?></td>
+							<td colspan="2" style="width:65%;"><?php if (isset($item['info']['message'])): ?><?php echo Text::limit_chars($item['info']['message'], 50).' ['.$item['info']['committer_name'].']'; else: echo __('Unknown'); endif ?></td>
 						</tr>
 <?php endforeach ?>
 					</tbody>
