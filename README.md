@@ -7,7 +7,7 @@ is kind of a [Github](http://github.com) repository browser clone for your proje
 
 * [Database module](http://github.com/kohana/database)
 * [ORM module](http://github.com/kohana/orm)
-* [Smarty module](http://github.com/MrAnchovy/kohana-module-smarty)
+* -[Smarty module](http://github.com/MrAnchovy/kohana-module-smarty)- (no longer needs smarty)
 * [Latest stable Kohana 3](http://github.com/kohana/kohana)
 * MySQL Database for a couple of tables
 * SSH access to your server
