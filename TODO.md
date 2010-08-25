@@ -15,7 +15,6 @@
 
 * Show bytes
 * Show lines in file
-* Show lines of code (SLOC)
 * Show kilobytes
 * Link to raw
 * Link to blame
@@ -35,6 +34,8 @@
 * List contributors
 * Branch List
 * Compare two revisions
+* Show lines of code in blob
+* Show project total lines of code
 
 ### Other
 
