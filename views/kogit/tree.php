@@ -8,7 +8,7 @@
 							<th style="padding-left:0;"><?php echo __("name"); ?></th>
 							<th><?php echo __("age"); ?></th>
 							<th><?php echo __("message"); ?></th>
-							<th style="text-align:right;"><a href="<?php echo $path; ?>/commit/" style="color:#fff;"><?php echo __("history"); ?></a></th>
+							<th style="text-align:right;"><a href="<?php echo $path; ?>commits/" style="color:#fff;"><?php echo __("history"); ?></a></th>
 						</tr>
 					</thead>
 					<tbody>

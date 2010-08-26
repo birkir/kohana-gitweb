@@ -18,7 +18,7 @@ class Controller_Kogit extends Controller {
 	
 	public function action_index()
 	{
-		$this->request->redirect('kogit/tree/head');
+		$this->request->redirect('kogit/tree/index');
 	}
 	
 	public function uri($uri=NULL)
