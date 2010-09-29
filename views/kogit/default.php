@@ -5,7 +5,7 @@
 		<meta http-equiv='Content-type' content='text/html; charset=utf-8' />
 		<title>KoGit 1.0</title>
 		<link href='<?php echo $path; ?>media/css/kogit.css' type='text/css' rel='stylesheet' media='screen' charset='utf-8' />
-		<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' type='text/javascript'></script>
+		<script src='<?php echo $path; ?>media/js/jquery.min.js' type='text/javascript'></script>
 		<script src='<?php echo $path; ?>media/js/kogit.js' type='text/javascript'></script>
 	</head>
 	<body>
