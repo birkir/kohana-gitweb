@@ -1,0 +1,3 @@
+[submodule "vendor/GitElephant"]
+	path = vendor/GitElephant
+	url = https://github.com/matteosister/GitElephant

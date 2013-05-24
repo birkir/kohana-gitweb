@@ -1,0 +1,5 @@
+{
+    "require": {
+        "cypresslab/gitelephant": "0.9.*"
+    }
+}
