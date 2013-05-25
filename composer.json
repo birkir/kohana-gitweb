@@ -1,5 +1,6 @@
 {
     "require": {
-        "cypresslab/gitelephant": "0.9.*"
+        "cypresslab/gitelephant": "0.9.*",
+	"michelf/php-markdown": "1.3"
     }
 }

@@ -1,6 +1,6 @@
 <ul class="breadcrumb">
         <?php $b = $tree->getBreadcrumb(); ?>
-        <li<?=(count($b) === 0 ? ' class="active"' : NULL);?>><?=HTML::anchor(URL::site('gitweb/tree/'.$reference), $config['name']);?></li>
+        <li<?=(count($b) === 0 ? ' class="active"' : NULL);?>><?=HTML::anchor(URL::site('gitweb/tree/'.$reference), $reponame);?></li>
         <?php foreach ($b as $i => $item): ?>
                 <li<?=($i+1 === count($b) ? ' class="active"' : NULL);?>><?=HTML::anchor(URL::site('gitweb/tree/'.$reference.'/'.$item['path']), $item['label']);?></li>
         <?php endforeach; ?>

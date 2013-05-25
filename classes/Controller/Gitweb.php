@@ -1,6 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 use GitElephant\Repository;
+use \Michelf\Markdown;
 
 /**
  * Gitweb Controller
@@ -29,13 +30,27 @@ class Controller_Gitweb extends Controller_Template {
 
 	/**
 	 * Extend controllers before function
-	 * 
+	 *
 	 * @return void
 	 */
 	public function before()
 	{
 		// Call the parent
 		parent::before();
+
+		// Get repository
+		$this->repository = $this->config['repository'];
+
+		// Set as docroot if not set
+		if (empty($this->repository))
+		{
+			$this->repository = DOCROOT;
+		}
+
+		if (empty($this->name))
+		{
+			$this->name = basename($this->repository);
+		}
 
 		// Only do this on media
 		if ($this->request->action() === 'media')
@@ -48,11 +63,8 @@ class Controller_Gitweb extends Controller_Template {
 			// Load gitweb configuration
 			$this->config = Kohana::$config->load('gitweb');
 
-			// Create markdown instance
-			$this->markdown = new Markdown_Parser();
-
 			// Create Repository instance
-			$this->repository = Repository::open($this->config['repository']);
+			$this->repository = Repository::open($this->repository);
 
 			// Get current ref
 			$parameters = explode('/', $this->request->param('ref', 'master'));
@@ -99,6 +111,7 @@ class Controller_Gitweb extends Controller_Template {
 			View::set_global('path', $this->path);
 			View::set_global('action', $this->request->action());
 			View::set_global('config', $this->config);
+			View::set_global('reponame', $this->name);
 		}
 	}
 
@@ -187,7 +200,7 @@ class Controller_Gitweb extends Controller_Template {
 				if (substr($item->getName(), -3) === '.md')
 				{
 					// Parse markdown
-					$readme = Markdown($readme);
+					$readme = Markdown::defaultTransform($readme);
 				}
 			}
 
@@ -206,7 +219,7 @@ class Controller_Gitweb extends Controller_Template {
 
 	/**
 	 * Render a given blob file with syntax highligting.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function action_blob()

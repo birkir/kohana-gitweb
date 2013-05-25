@@ -1,5 +1,5 @@
 <ul class="breadcrumb">
-	<li><a href="<?=URL::site('gitweb');?>"><strong><?=$config['name'];?></strong></a></li>
+	<li><a href="<?=URL::site('gitweb');?>"><strong><?=$reponame;?></strong></a></li>
 	<li class="active"><?=__('Commit History');?></li>
 </ul>
 
