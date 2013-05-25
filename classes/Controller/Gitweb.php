@@ -67,10 +67,10 @@ class Controller_Gitweb extends Controller_Template {
 			$this->repository = Repository::open($this->repository);
 
 			// Get current ref
-			$parameters = explode('/', $this->request->param('ref', 'master'));
+			$parameters = explode('/', $this->request->param('ref', $this->repository->getMainBranch()->getName()));
 
 			// Get all branches
-			$branches = $this->repository->getBranches(TRUE);
+			$branches = $this->repository->getBranches(TRUE, TRUE);
 
 			// Loop through url parts
 			foreach ($parameters as $i => $param)
