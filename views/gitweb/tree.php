@@ -1,24 +1,25 @@
+<br>
+<div class="alert alert-info">
+	<strong><?=$commit->getMessage();?></strong>
+	<br>
+	<span class="text-muted"><?=$commit->getAuthor()->getName();?> authored <?=Date::fuzzy_span($commit->getDatetimeAuthor()->getTimestamp());?></span>
+	<a href="<?=URL::site('gitweb/tree/'.$commit->getSha());?>" class="pull-right text-muted">latest commit</span> <span style="color:#333;"><?=$commit->getSha(TRUE);?></span></a>
+</div>
+
 <ul class="breadcrumb">
 	<?php $b = $tree->getBreadcrumb(); ?>
-	<li<?=(count($b) === 0 ? ' class="active"' : NULL);?>><?=HTML::anchor(URL::site('gitweb/tree/'.$reference), $reponame);?></li>
+	<li<?=(count($b) === 0 ? ' class="active"' : NULL);?>><?=HTML::anchor(URL::site('gitweb/tree/'.$reference), $config['name']);?></li>
 	<?php foreach ($b as $i => $item): ?>
 		<li<?=($i+1 === count($b) ? ' class="active"' : NULL);?>><?=HTML::anchor(URL::site('gitweb/tree/'.$reference.'/'.$item['path']), $item['label']);?></li>
 	<?php endforeach; ?>
 </ul>
 
-<table class="table table-hover table-striped gitweb-tree-table">
+<table class="table table-hover gitweb-tree-table">
 	<thead>
 		<tr>
-			<td colspan="3" class="commit-message">
-				<a href="#"><?=$commit->getMessage();?></a>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3" class="commit-author">
-				<strong><?=$commit->getAuthor()->getName();?></strong>
-				<span class="text-muted"> authored <?=Date::fuzzy_span($commit->getDatetimeAuthor()->getTimestamp());?></span>
-				<a href="#" class="pull-right text-muted">latest commit</span> <span style="color:#333;"><?=UTF8::substr($commit->getSha(), 0 , 10);?></span></a>
-			</td>
+			<th><?=__('Filename');?></th>
+			<th><?=__('Age');?></th>
+			<th><?=__('Last commit');?></th>
 		</tr>
 	</thead>
 	<tbody>

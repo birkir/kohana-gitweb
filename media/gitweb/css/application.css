@@ -1,13 +1,11 @@
 /**
  * Styles
  */
-.gitweb-tree-table { border: 1px solid #dddddd; }
-.gitweb-tree-table tbody tr td { background: #f9f9f9; border-top-color: #e9e9e9; }
-.gitweb-tree-table td > i { font-size: 14px; display: inline-block; width: 14px; }
-.gitweb-tree-table td > i.icon-folder-close { color: #1155cc; }
-.gitweb-tree-table thead td { font-size: 12px; padding: 4px 5px; }
-.gitweb-tree-table .commit-message { background-color: #e6f1f6; }
-.gitweb-tree-table .commit-message a { color: #4e575b; }
+.gitweb-tree-table { border-top: 1px solid #dddddd; }
+.gitweb-tree-table td > i { font-size: 14px; display: inline-block; width: 14px; color: #4d90fe; }
+.gitweb-tree-table thead th { font-size: 11px; padding: 4px 5px; color: #555; text-transform: uppercase; }
+.gitweb-tree-table thead th:first-child { color: #dd4b39; }
+.gitweb-tree-table td a { color: #333333; }
 
 .gitweb-diff-table { margin: 0; }
 .gitweb-diff-table > tbody > tr > td { text-align: center; width: 3%; border: none; padding: 0px; font-family: Consolas, "Liberation Mono", Courier, monospace; border-right: 1px solid #e5e5e5; }
@@ -15,18 +13,28 @@
 .gitweb-diff-table > tbody > tr > td > pre { border: none; background: none; padding: 0; margin: 0; }
 .gitweb-diff-table > tbody > tr.headerline > td { background: #f9f9f9; border-bottom: 1px solid #efefef; }
 
+.gitweb-blob-panel span.divider { color: #dfdfdf; padding: 0 2px; }
+.gitweb-blob-panel .panel-heading { font-size: 13px; line-height: 23px; }
+
 .gitweb-branch-menu { margin: 6px 10px 0 0; }
 .gitweb-branch-menu .btn-small.dropdown-toggle { padding: 2px 7px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
 
+.gitweb-commits-list a > .glyphicon { margin-top: -8px; }
 .gitweb-commits-list a.list-group-item:hover,
 .gitweb-commits-list a.list-group-item:focus { background-color: #ffffcc; }
 
-pre.prettyprint { background: none; border: none !important; margin: -15px; padding: 0 !important; }
+.gitweb-branches-list .list-group-item { padding: 6px 15px 6px 15px; }
+.gitweb-branches-list .list-group-item.active { background: rgba(243, 243, 243, 0.85); }
+.gitweb-branches-list .list-group-item .name { font-size: 16px; font-weight: bold; }
+.gitweb-branches-list .list-group-item .pull-right { margin-top: 8px; }
+
+
+pre.prettyprint { background: none; border: none !important; margin: -15px; padding: 0 !important; tab-size: 3; }
 pre.prettyprint ol.linenums { margin-left: 50px; }
 pre.prettyprint ol.linenums > li { list-style-type: decimal; background: #fff;  border-left: 1px solid #e5e5e5; padding-left: 10px; color: #aaa; }
 
 /** todc addon **/
-.breadcrumb { padding: 0; margin: 10px 0; background: none; font-size: 12px; }
+.breadcrumb { background: none; font-size: 12px; margin: 0; padding: 4px 7px; margin-top: 6px; }
 .breadcrumb li a { color: #777; }
 .breadcrumb li:after { content: "\e0c1"; color: #aaa; font-family: FontAwesome; font-weight: normal; font-style: normal; text-decoration: inherit; -webkit-font-smoothing: antialiased; padding-right: 1px; }
 .breadcrumb li.active a { font-weight: bold; }

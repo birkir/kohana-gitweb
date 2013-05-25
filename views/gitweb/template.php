@@ -23,15 +23,14 @@
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/gitweb-media/ico/apple-touch-icon-114-precomposed.png">
 		  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/gitweb-media/ico/apple-touch-icon-72-precomposed.png">
 		                <link rel="apple-touch-icon-precomposed" href="/gitweb-media/ico/apple-touch-icon-57-precomposed.png">
-                                               <link rel="shortcut icon" href="/gitweb-media/ico/favicon.png">
+                                       <link rel="shortcut icon" href="/gitweb-media/ico/favicon.png">
 
 		<link href="/gitweb-media/css/todc-bootstrap.css" rel="stylesheet"></head>
 		<link href="/gitweb-media/css/select2.css" rel="stylesheet">
 		<link href="/gitweb-media/css/application.css" rel="stylesheet">
 	</head>
 	<body>
-
-		<div class="navbar navbar-static-top" style="margin-bottom:0;">
+		<div class="navbar navbar-static-top">
 			<a class="navbar-brand" href="#">Gitweb</a>
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="#">Code</a></li>
@@ -40,46 +39,37 @@
 				<li><a href="#">Issues</a></li>
 				<li><a href="#">Wiki</a></li>
 				<li><a href="#">Graphs</a></li>
-				<li><a href="#">Settings</a></li>
 			</ul>
 		</div>
-<!--
-		<div class="navbar navbar-masthead">
-			<div class="container">
-				<p class="navbar-text">Repository Browser</p>
-			</div>
-		</div>
--->
-<br>
-
 		<div class="container">
-			<div class="btn-group gitweb-branch-menu pull-left">
-				<button type="button" class="btn btn-default btn-small dropdown-toggle" data-toggle="dropdown">
-					<span class="text-muted"><?=$reference_type;?>:</span>
-					<strong><?=$reference instanceof GitElephant\Objects\Commit ? $reference->getSha(TRUE) : $reference;?></strong>
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<?php foreach ($repository->getBranches() as $item): ?>
-						<li>
-							<a href="<?=URL::site('gitweb/'.$action.'/'.$item->getName());?>">
-								<?php if ($item->getName() === $reference): ?>
-									<strong><?=$item->getName();?></strong>
-								<?php else: ?>
-									<?=$item->getName();?>
-								<?php endif; ?>
-							</a>
-						</li>
+			<div class="navbar navbar-toolbar">
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a data-toggle="dropdown" class="navbar-brand dropdown-toggle" href="#">
+							<?=$reference instanceof GitElephant\Objects\Commit ? '#'.$reference->getSha(TRUE) : $reference;?>
+							<b class="caret"></b>
+						</a>
+						<ul class="navbar-brand dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+							<?php foreach ($repository->getBranches() as $item): ?>
+								<li>
+									<a href="<?=URL::site('gitweb/'.$action.'/'.$item->getName());?>" tabindex="-1">
+										<?php if ($item->getName() === $reference): ?>
+											<strong><?=$item->getName();?></strong>
+										<?php else: ?>
+											<?=$item->getName();?>
+										<?php endif; ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav">
+					<?php foreach ($menu as $name => $item): ?>
+						<li<?=($item['active'] ? ' class="active"' : NULL);?>><?=HTML::anchor(URL::site('gitweb/'.$item['path']), __($name));?></li>
 					<?php endforeach; ?>
 				</ul>
 			</div>
-
-			<ul class="nav nav-tabs">
-				<?php foreach ($menu as $item): ?>
-					<li<?=HTML::attributes($item['attr']);?>><?=HTML::anchor($item['path'], $item['name']);?></li>
-				<?php endforeach; ?>
-			</ul>
-
 			<?=(isset($view) ? $view: NULL);?>
 		</div>
 
