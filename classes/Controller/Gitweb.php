@@ -38,6 +38,9 @@ class Controller_Gitweb extends Controller_Template {
 		// Call the parent
 		parent::before();
 
+		// Load gitweb configuration
+		$this->config = Kohana::$config->load('gitweb');
+
 		// Get repository
 		$this->repository = $this->config['repository'];
 
@@ -60,9 +63,6 @@ class Controller_Gitweb extends Controller_Template {
 		}
 		else
 		{
-			// Load gitweb configuration
-			$this->config = Kohana::$config->load('gitweb');
-
 			// Create Repository instance
 			$this->repository = Repository::open($this->repository);
 
