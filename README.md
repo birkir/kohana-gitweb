@@ -10,6 +10,14 @@ This project does not include any documentation other than auto generated api do
 
 Just extract/clone the module to your modules directory. Then edit your config/gitweb.php to point to the repository you want to track.
 
+``` bash
+$ git submodule add git://github.com/birkir/kohana-gitweb.git modules/gitweb
+$ git submodule update --init --recursive
+$ cd modules/gitweb
+$ curl -s https://getcomposer.org/installer | php
+$ composer install
+```
+
 ## Future plans
 
 Adding Issue tracker, wikis and other stuff that GitHub has. We will be using ORM module for data source.
