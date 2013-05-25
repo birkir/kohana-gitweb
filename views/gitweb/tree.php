@@ -17,8 +17,8 @@
 <table class="table table-hover gitweb-tree-table">
 	<thead>
 		<tr>
-			<th><?=__('Filename');?></th>
-			<th><?=__('Age');?></th>
+			<th width="150"><?=__('Filename');?></th>
+			<th width="150"><?=__('Age');?></th>
 			<th><?=__('Last commit');?></th>
 		</tr>
 	</thead>
