@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-use GitElephant\Repository;
+use \GitElephant\Repository;
 use \Michelf\Markdown;
 
 /**
@@ -50,6 +50,7 @@ class Controller_Gitweb extends Controller_Template {
 			$this->repository = DOCROOT;
 		}
 
+		// Set repo name if not set
 		if (empty($this->name))
 		{
 			$this->name = basename($this->repository);
