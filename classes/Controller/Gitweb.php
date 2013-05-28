@@ -286,14 +286,16 @@ class Controller_Gitweb extends Controller_Template {
 	/**
 	 * Visualize the selected commit with changes made to the files.
 	 * 
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function action_commit()
 	{
+		// Setup view
 		$this->view = View::factory('gitweb/commit')
 		->bind('commit', $commit)
 		->bind('diff', $diff)
-		->bind('stats', $stats);
+		->bind('stats', $stats)
+		->set('rowClass', array('unchanged' => 'normal', 'added' => 'success', 'deleted' => 'danger'));
 
 		// Get last commit from repository
 		$commit = $this->repository->getLog($this->reference, $this->path, 1)->first();
@@ -301,42 +303,8 @@ class Controller_Gitweb extends Controller_Template {
 		// Setup the diff
 		$diff = $this->repository->getDiff($this->reference);
 
-		// Initialize statistics array
-		$stats = array(
-			'index'    => 0,
-			'mode'     => 0,
-			'new_file' => 0,
-			'deleted'  => 0,
-			'deleted_file' => 0,
-			'line-added' => 0,
-			'line-deleted' => 0,
-			'line-unchanged' => 0
-		);
-
-		// Loop through diff
-		foreach ($diff as $diffObject)
-		{
-			// Iterate index, mode, new_file and deleted states.
-			$stats[$diffObject->getMode()]++;
-
-			// Loop through chucnks
-			foreach ($diffObject as $diffChunk)
-			{
-				// Loop through lines in chunk
-				foreach ($diffChunk as $diffLine)
-				{
-					// Iterate lines added and deleted
-					$stats['line-'.$diffLine->getType()]++;
-				}
-			}
-		}
-
-		// Row classes converter
-		$this->view->rowClass = array(
-		        'unchanged' => 'normal',
-		        'added' => 'success',
-		        'deleted' => 'danger'
-		);
+		// Calculate diff statistics
+		$stats = Gitweb::diff_stats($diff);
 	}
 
 	/**

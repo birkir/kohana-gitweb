@@ -23,7 +23,7 @@
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/gitweb-media/ico/apple-touch-icon-114-precomposed.png">
 		  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/gitweb-media/ico/apple-touch-icon-72-precomposed.png">
 		                <link rel="apple-touch-icon-precomposed" href="/gitweb-media/ico/apple-touch-icon-57-precomposed.png">
-                                       <link rel="shortcut icon" href="/gitweb-media/ico/favicon.png">
+		                               <link rel="shortcut icon" href="/gitweb-media/ico/favicon.png">
 
 		<link href="/gitweb-media/css/todc-bootstrap.css" rel="stylesheet"></head>
 		<link href="/gitweb-media/css/select2.css" rel="stylesheet">
@@ -31,7 +31,7 @@
 	</head>
 	<body>
 		<div class="navbar navbar-static-top">
-			<a class="navbar-brand" href="#">Gitweb</a>
+			<a class="navbar-brand" href="<?=URL::site('gitweb');?>">Gitweb</a>
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="#">Code</a></li>
 				<li><a href="#">Network</a></li>
@@ -71,6 +71,14 @@
 				</ul>
 			</div>
 			<?=(isset($view) ? $view: NULL);?>
+			<br>
+			<footer>
+				<hr>
+				<a href="http://github.com/birkir/kohana-gitweb" target="_blank">Gitweb Repository Browser</a> for <a href="http://kohanaframework.org" target="_blank">Kohana 3.3.0</a>
+				<a href="http://github.com/kohana/kohana/blob/3.3/master/LICENSE.md" class="pull-right" target="_blank">Kohana Licence</a>
+				<br>
+				<br>
+			</footer>
 		</div>
 
 		<!-- JS and analytics only. -->
