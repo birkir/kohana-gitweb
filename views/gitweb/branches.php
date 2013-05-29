@@ -20,8 +20,8 @@
 			</a>
 			<br>
 			<span>
-				<?=__('Last updated :fuzzyspan by ', array(
-					':fuzzyspan' => Date::fuzzy_span($commit->getDatetimeAuthor()->getTimestamp())
+				<?=__('Last updated :time by ', array(
+					':time' => Gitweb::date($commit->getDatetimeAuthor())
 				));?>
 				<a href="#"><?=$commit->getAuthor()->getName();?></a>
 			</span>

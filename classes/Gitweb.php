@@ -2,9 +2,43 @@
 
 /**
  * Helper class for Gitweb processing
+ *
+ * @category Gitweb
+ * @author Birkir Gudjonsson (birkir.gudjonsson@gmail.com)
+ * @licence Kohana Licence
  */
 class Gitweb {
 
+	/**
+	 * Facebook style time parser
+	 *
+	 * @param DateTime time
+	 * @return string
+	 */
+	public static function date(DateTime $date)
+	{
+		// units and span array
+		$units = array('second', 'minute', 'hour', 'day', 'month', 'year', 'decade');
+		$span = array(60, 60, 24, 30.4375, 12, 10);
+
+		// dates to unix timestamp
+		$now = time();
+		$to = $date->getTimestamp();
+
+		// calculate difference
+		$diff = $now > $to ? $now - $to : $to - $now;
+
+		// divide diff to span
+		for ($i = 0; $diff >= $span[$i] && $i < (count($span)-1); $i++) $diff /= $span[$i];
+
+		return round($diff).' '.$units[$i].($diff > 1 ? 's' : NULL).' '.($now > $to ? 'ago' : 'from now');
+	}
+
+	/**
+	 * Stats for Diff Object
+	 *
+	 * @return array
+	 */
 	public static function diff_stats(GitElephant\Objects\Diff\Diff $diff)
 	{
 		// Initialize statistics array

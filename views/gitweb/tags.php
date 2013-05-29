@@ -4,7 +4,7 @@
 	<tbody>
 		<?php foreach ($tags as $tag): $commit = $repository->getLog($tag, NULL, 1, 0)->first(); ?>
 			<tr>
-				<td width="200" class="text-muted"><?=Date::fuzzy_span($commit->getDatetimeAuthor()->getTimestamp());?></td>
+				<td width="200" class="text-muted"><?=Gitweb::date($commit->getDatetimeAuthor());?></td>
 				<td>
 					<strong><?=$tag->getName();?></strong><br>
 					<ul class="list-inline">

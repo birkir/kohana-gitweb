@@ -19,7 +19,7 @@
 			<a href="<?=URL::site('gitweb/commit/'.$commit->getSha());?>" class="list-group-item">
 				<strong><?=$commit->getMessage();?></strong><br>
 				<?=$commit->getAuthor()->getName();?>
-				<span class="text-muted"><?=__('authored');?> <?=Date::fuzzy_span($commit->getDatetimeAuthor()->getTimestamp());?></span>
+				<span class="text-muted"><?=__('authored');?> <?=Gitweb::date($commit->getDatetimeAuthor());?></span>
 				<span class="glyphicon glyphicon-chevron-right"></span>
 			</a>
 		<?php endforeach; ?>

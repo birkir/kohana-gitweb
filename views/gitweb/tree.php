@@ -2,8 +2,8 @@
 <div class="alert alert-info">
 	<strong><?=$commit->getMessage();?></strong>
 	<br>
-	<span class="text-muted"><?=$commit->getAuthor()->getName();?> authored <?=Date::fuzzy_span($commit->getDatetimeAuthor()->getTimestamp());?></span>
-	<a href="<?=URL::site('gitweb/tree/'.$commit->getSha());?>" class="pull-right text-muted">latest commit</span> <span style="color:#333;"><?=$commit->getSha(TRUE);?></span></a>
+	<span class="text-muted"><?=$commit->getAuthor()->getName();?> <?=__('authored');?> <?=Gitweb::date($commit->getDatetimeAuthor());?></span>
+	<a href="<?=URL::site('gitweb/tree/'.$commit->getSha());?>" class="pull-right text-muted"><?=__('latest commit');?></span> <span style="color:#333;"><?=$commit->getSha(TRUE);?></span></a>
 </div>
 
 <ul class="breadcrumb">
@@ -29,7 +29,7 @@
 					<i class="icon-<?=($file['type'] === 'tree' ? 'folder-close' : 'file-alt');?>"></i>
 					<?=HTML::anchor($file['uri'], $file['name'], array('class' => 'path'));?>
 				</td>
-				<td><?=Date::fuzzy_span($file['commit']->getDatetimeAuthor()->getTimestamp());?></td>
+				<td><?=Gitweb::date($file['commit']->getDatetimeAuthor());?></td>
 				<td><?=$file['commit']->getMessage();?> [<a href="#"><?=$file['commit']->getAuthor()->getName();?></a>]</td>
 			</tr>
 		<?php endforeach; ?>
